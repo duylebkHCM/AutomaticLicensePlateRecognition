@@ -20,11 +20,20 @@ for imagePath in sorted(list(paths.list_images(args["image"]))):
     lpd = License_Plate_Detector(image)
     plates = lpd.detect()
 
-    for lpBox in plates:
-        print(lpBox)
-        lpBox = np.array(lpBox).reshape((-1,1,2)).astype(np.int32)
-        print(lpBox)
-        cv.drawContours(image, [lpBox], -1, (0,255,0), 2)
+    # for (i, (lp,lpBox)) in enumerate(plates):
+    #     print(lpBox)
+    #     lpBox = np.array(lpBox).reshape((-1,1,2)).astype(np.int32)
+    #     cv.drawContours(image, [lpBox], -1, (0,255,0), 2)
 
+    #     candidates = np.dstack([lp.candidates]*3)
+    #     thresh = np.dstack([lp.thresh]*3)
+    #     output = np.vstack([lp.plate, thresh, candidates])
+    #     cv.imshow('Plate and Candidate #{}'.format(i+1), output)
+
+    for (lpBox, chars) in plates:
+        for (i, char) in enumerate(chars):
+            cv.imshow('Character {}'.format(i+1), char)
+            
     cv.imshow("image", image)
     cv.waitKey(0)
+    cv.destroyAllWindows()
